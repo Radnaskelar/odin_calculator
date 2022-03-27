@@ -1,7 +1,9 @@
 #display {
     border: solid green;
-    display: flex;
-    justify-content: right;
+}
+
+.buffer {
+    border: solid pink;
 }
 
 #digits {
