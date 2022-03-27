@@ -1,0 +1,13 @@
+#display {
+    border: solid green;
+    display: flex;
+    justify-content: right;
+}
+
+#digits {
+    border: solid red;
+}
+
+#operators {
+    border: solid blue;
+}
