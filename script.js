@@ -1,11 +1,11 @@
 //main math operators as functions
 
 //addition via rest parameters = sum
-const sum = function (...args) {
-    return args.reduce((previous, current) => {
-        return previous + current;
-    });
-}
+// const sum = function (...args) {
+//     return args.reduce((previous, current) => {
+//         return previous + current;
+//     });
+// }
 //addition
 const addition = (a, b) => a + b;
 
@@ -20,7 +20,6 @@ const division = (a, b) => a / b;
 
 //operator
 const operate = function (operator, a, b) {
-    //if ('+', '-', '*', '/') {}
     switch (operator) {
         case '+':
             return addition(a, b);
@@ -38,10 +37,10 @@ const operators = Array.from(document.querySelector('#operators').querySelectorA
 const numbers = Array.from(document.querySelector('#digits').querySelectorAll('button'));
 
 let displayValue = [];
-let currentOperator;
-let firstNumber = 0;
-let secondNumber = 0;
-let result = 0;
+let currentOperator = '';
+let firstNumber = '';
+let secondNumber = '';
+let result = '';
 const mainScreen = document.querySelector('#display').querySelector('p.main');
 const buffer = document.querySelector('#display').querySelector('p.buffer');
 
@@ -49,40 +48,56 @@ const buffer = document.querySelector('#display').querySelector('p.buffer');
 function numberDisplay(e) {
     mainScreen.textContent += e.target.value;
     displayValue.push(mainScreen.textContent);
+    firstNumber = parseFloat(displayValue.pop());
 }
 
 numbers.forEach((button) => {
     button.addEventListener('click', numberDisplay);
 })
 
-//add an if statement later for all operators
 operators.forEach((button) => {
     button.addEventListener('click', function () {
-        //currentOperator = addition(); //if goes here
-
-        firstNumber = parseInt(displayValue.pop());
-        displayValue.length = 0;
+        // if statement to check if operator and/or numbers exist
+        if (!currentOperator == '') {
+            result = operate(currentOperator, secondNumber, firstNumber);
+            secondNumber = result;
+            
+        } else {
+            currentOperator = button.value;
+            secondNumber = firstNumber;
+            firstNumber = 0;
+        }
 
         clearDisplay();
+        currentOperator = button.value;
     });
 })
 
 const equalButton = document.querySelector('button.operate');
 
-
+//rework equal btn
 equalButton.addEventListener('click', function () {
 
-    secondNumber = parseInt(displayValue.pop())
+    if (displayValue.length === 0) {
+        secondNumber = 0;
+    } else {
+        secondNumber = parseFloat(displayValue.pop())
+    }
+
     displayValue.length = 0;
-    result = addition(firstNumber, secondNumber);
+    result = operate(currentOperator, firstNumber, secondNumber);
+
     console.log(result);
 
     resultDisplay();
+    displayValue.push(result);
+    firstNumber = result;
+
 
 })
 
 function clearDisplay() {
-    buffer.textContent = firstNumber;
+    buffer.textContent = secondNumber;
     mainScreen.textContent = '';
 }
 
