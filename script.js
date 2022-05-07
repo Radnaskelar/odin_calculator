@@ -58,10 +58,10 @@ numbers.forEach((button) => {
 operators.forEach((button) => {
     button.addEventListener('click', function () {
         // if statement to check if operator and/or numbers exist
-        if (!currentOperator == '') {
+        if (currentOperator) {
             result = operate(currentOperator, secondNumber, firstNumber);
             secondNumber = result;
-            
+
         } else {
             currentOperator = button.value;
             secondNumber = firstNumber;
@@ -78,22 +78,9 @@ const equalButton = document.querySelector('button.operate');
 //rework equal btn
 equalButton.addEventListener('click', function () {
 
-    if (displayValue.length === 0) {
-        secondNumber = 0;
-    } else {
-        secondNumber = parseFloat(displayValue.pop())
-    }
-
-    displayValue.length = 0;
-    result = operate(currentOperator, firstNumber, secondNumber);
-
+    result = operate(currentOperator, secondNumber, firstNumber);
     console.log(result);
-
     resultDisplay();
-    displayValue.push(result);
-    firstNumber = result;
-
-
 })
 
 function clearDisplay() {
