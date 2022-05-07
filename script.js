@@ -57,7 +57,7 @@ numbers.forEach((button) => {
 
 operators.forEach((button) => {
     button.addEventListener('click', function () {
-        // if statement to check if operator and/or numbers exist
+
         if (currentOperator) {
             result = operate(currentOperator, secondNumber, firstNumber);
             secondNumber = result;
@@ -65,11 +65,15 @@ operators.forEach((button) => {
         } else {
             currentOperator = button.value;
             secondNumber = firstNumber;
-            firstNumber = 0;
+            firstNumber = null;
         }
-
-        clearDisplay();
-        currentOperator = button.value;
+        if (result === Infinity) {
+            buffer.textContent = 'ERROR';
+            mainScreen.textContent = '';
+        } else {
+            clearDisplay();
+            currentOperator = button.value;
+        }
     });
 })
 
@@ -80,15 +84,33 @@ equalButton.addEventListener('click', function () {
 
     result = operate(currentOperator, secondNumber, firstNumber);
     console.log(result);
-    resultDisplay();
+    if (result === Infinity) {
+        buffer.textContent = 'ERROR';
+        mainScreen.textContent = '';
+    } else {
+        resultDisplay();
+    }
 })
 
 function clearDisplay() {
-    buffer.textContent = secondNumber;
+    buffer.textContent = Math.round(secondNumber * 100) / 100;
     mainScreen.textContent = '';
 }
 
 function resultDisplay() {
-    buffer.textContent = result;
+    buffer.textContent = Math.round(result * 100) / 100;
     mainScreen.textContent = '';
 }
+
+// clear button
+const clear = document.querySelector('.clear');
+function clearAll() {
+    currentOperator = '';
+    firstNumber = '';
+    secondNumber = '';
+    result = '';
+    mainScreen.textContent = '';
+    buffer.textContent = '';
+}
+
+clear.addEventListener('click', clearAll);
