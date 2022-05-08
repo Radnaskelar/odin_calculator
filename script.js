@@ -35,6 +35,7 @@ const operate = function (operator, a, b) {
 const buttons = document.querySelectorAll('button');
 const operators = Array.from(document.querySelector('#operators').querySelectorAll('button'));
 const numbers = Array.from(document.querySelector('#digits').querySelectorAll('button'));
+const decimal = document.querySelector('.decimal');
 
 let displayValue = [];
 let currentOperator = '';
@@ -44,12 +45,17 @@ let result = '';
 const mainScreen = document.querySelector('#display').querySelector('p.main');
 const buffer = document.querySelector('#display').querySelector('p.buffer');
 
-//display on screen, push clicked numbers in help array
 function numberDisplay(e) {
     mainScreen.textContent += e.target.value;
     displayValue.push(mainScreen.textContent);
     firstNumber = parseFloat(displayValue.pop());
 }
+// decimal to-do:
+decimal.addEventListener('click', function (e) {
+    mainScreen.textContent += e.target.value;
+    displayValue.push(mainScreen.textContent);
+    firstNumber = parseFloat(displayValue.pop());
+});
 
 numbers.forEach((button) => {
     button.addEventListener('click', numberDisplay);
@@ -57,11 +63,16 @@ numbers.forEach((button) => {
 
 operators.forEach((button) => {
     button.addEventListener('click', function () {
-
         if (currentOperator) {
             result = operate(currentOperator, secondNumber, firstNumber);
             secondNumber = result;
-
+            firstNumber = null;
+        } else if (!currentOperator && firstNumber && secondNumber) {
+            currentOperator = button.value;
+            secondNumber = firstNumber;
+            firstNumber = null;
+        } else if (!currentOperator && secondNumber) {
+            currentOperator = button.value;
         } else {
             currentOperator = button.value;
             secondNumber = firstNumber;
@@ -79,17 +90,18 @@ operators.forEach((button) => {
 
 const equalButton = document.querySelector('button.operate');
 
-//rework equal btn
 equalButton.addEventListener('click', function () {
-
     result = operate(currentOperator, secondNumber, firstNumber);
     console.log(result);
-    if (result === Infinity) {
+    if (result === Infinity || NaN) {
         buffer.textContent = 'ERROR';
         mainScreen.textContent = '';
     } else {
         resultDisplay();
     }
+    secondNumber = result;
+    firstNumber = null;
+    currentOperator = '';
 })
 
 function clearDisplay() {
