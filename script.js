@@ -46,15 +46,19 @@ const mainScreen = document.querySelector('#display').querySelector('p.main');
 const buffer = document.querySelector('#display').querySelector('p.buffer');
 
 function numberDisplay(e) {
-    mainScreen.textContent += e.target.value;
-    displayValue.push(mainScreen.textContent);
-    firstNumber = parseFloat(displayValue.pop());
+        mainScreen.textContent += e.target.value;
+        displayValue.push(mainScreen.textContent);
+        firstNumber = parseFloat(displayValue.pop());
 }
 // decimal to-do:
 decimal.addEventListener('click', function (e) {
-    mainScreen.textContent += e.target.value;
-    displayValue.push(mainScreen.textContent);
-    firstNumber = parseFloat(displayValue.pop());
+    if (mainScreen.textContent.includes('.')) {
+        return;
+    } else {
+        mainScreen.textContent += e.target.value;
+        displayValue.push(mainScreen.textContent);
+        firstNumber = parseFloat(displayValue.pop());
+    }
 });
 
 numbers.forEach((button) => {
@@ -91,17 +95,21 @@ operators.forEach((button) => {
 const equalButton = document.querySelector('button.operate');
 
 equalButton.addEventListener('click', function () {
-    result = operate(currentOperator, secondNumber, firstNumber);
-    console.log(result);
-    if (result === Infinity || NaN) {
-        buffer.textContent = 'ERROR';
-        mainScreen.textContent = '';
+    if (!currentOperator) {
+        return;
     } else {
-        resultDisplay();
+        result = operate(currentOperator, secondNumber, firstNumber);
+        console.log(result);
+        if (result === Infinity || NaN) {
+            buffer.textContent = 'ERROR';
+            mainScreen.textContent = '';
+        } else {
+            resultDisplay();
+        }
+        secondNumber = result;
+        firstNumber = null;
+        currentOperator = '';
     }
-    secondNumber = result;
-    firstNumber = null;
-    currentOperator = '';
 })
 
 function clearDisplay() {
