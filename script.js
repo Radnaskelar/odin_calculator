@@ -50,7 +50,7 @@ function numberDisplay(e) {
         displayValue.push(mainScreen.textContent);
         firstNumber = parseFloat(displayValue.pop());
 }
-// decimal to-do:
+
 decimal.addEventListener('click', function (e) {
     if (mainScreen.textContent.includes('.')) {
         return;
@@ -122,8 +122,8 @@ function resultDisplay() {
     mainScreen.textContent = '';
 }
 
-// clear button
-const clear = document.querySelector('.clear');
+const clearBtn = document.querySelector('.clear');
+
 function clearAll() {
     currentOperator = '';
     firstNumber = '';
@@ -133,4 +133,20 @@ function clearAll() {
     buffer.textContent = '';
 }
 
-clear.addEventListener('click', clearAll);
+clearBtn.addEventListener('click', clearAll);
+
+//backspace
+
+const backspaceBtn = document.querySelector('.backspace');
+
+let removed = [];
+
+function backspace() {
+    removed = mainScreen.textContent;
+    mainScreen.textContent = removed.slice(0, -1);
+    firstNumber = null;
+    
+    console.log(removed);
+}
+
+backspaceBtn.addEventListener('click', backspace);
