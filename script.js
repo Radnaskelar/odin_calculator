@@ -39,16 +39,16 @@ const decimal = document.querySelector('.decimal');
 
 let displayValue = [];
 let currentOperator = '';
-let firstNumber = '';
-let secondNumber = '';
-let result = '';
+let firstNumber = null;
+let secondNumber = null;
+let result = null;
 const mainScreen = document.querySelector('#display').querySelector('p.main');
 const buffer = document.querySelector('#display').querySelector('p.buffer');
 
 function numberDisplay(e) {
-        mainScreen.textContent += e.target.value;
-        displayValue.push(mainScreen.textContent);
-        firstNumber = parseFloat(displayValue.pop());
+    mainScreen.textContent += e.target.value;
+    displayValue.push(mainScreen.textContent);
+    firstNumber = parseFloat(displayValue.pop());
 }
 
 decimal.addEventListener('click', function (e) {
@@ -99,7 +99,6 @@ equalButton.addEventListener('click', function () {
         return;
     } else {
         result = operate(currentOperator, secondNumber, firstNumber);
-        console.log(result);
         if (result === Infinity || NaN) {
             buffer.textContent = 'ERROR';
             mainScreen.textContent = '';
@@ -126,16 +125,14 @@ const clearBtn = document.querySelector('.clear');
 
 function clearAll() {
     currentOperator = '';
-    firstNumber = '';
-    secondNumber = '';
+    firstNumber = null;
+    secondNumber = null;
     result = '';
     mainScreen.textContent = '';
     buffer.textContent = '';
 }
 
 clearBtn.addEventListener('click', clearAll);
-
-//backspace
 
 const backspaceBtn = document.querySelector('.backspace');
 
@@ -145,8 +142,30 @@ function backspace() {
     removed = mainScreen.textContent;
     mainScreen.textContent = removed.slice(0, -1);
     firstNumber = null;
-    
-    console.log(removed);
 }
 
 backspaceBtn.addEventListener('click', backspace);
+
+document.addEventListener('keydown', function (e) {
+    const digit = document.querySelector(`#digits button[data-key="${e.keyCode}"]`);
+    const backspaceKey = document.querySelector(`#backspace button[data-key="${e.keyCode}"]`);
+    const decimalKey = document.querySelector(`#decimal button[data-key="${e.keyCode}"]`);
+
+    if (digit) {
+        mainScreen.textContent += `${e.key}`;
+        displayValue.push(mainScreen.textContent);
+        firstNumber = parseFloat(displayValue.pop());
+    } else if (backspaceKey) {
+        removed = mainScreen.textContent;
+        mainScreen.textContent = removed.slice(0, -1);
+        firstNumber = null;
+    } else if (decimalKey) {
+        if (mainScreen.textContent.includes('.')) {
+            return;
+        } else {
+            mainScreen.textContent += `${e.key}`;
+            displayValue.push(mainScreen.textContent);
+            firstNumber = parseFloat(displayValue.pop());
+        }
+    } else if (!digit || !backspaceKey || !decimalKey) return;
+});
