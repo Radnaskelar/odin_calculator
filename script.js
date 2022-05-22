@@ -54,6 +54,10 @@ function numberDisplay(e) {
 decimal.addEventListener('click', function (e) {
     if (mainScreen.textContent.includes('.')) {
         return;
+    } else if (mainScreen.textContent === '') {
+        mainScreen.textContent = 0+e.target.value;
+        displayValue.push(mainScreen.textContent);
+        firstNumber = parseFloat(displayValue.pop());
     } else {
         mainScreen.textContent += e.target.value;
         displayValue.push(mainScreen.textContent);
@@ -83,7 +87,7 @@ operators.forEach((button) => {
             secondNumber = firstNumber;
             firstNumber = null;
         }
-        if (result === Infinity) {
+        if (result === Infinity || NaN) {
             alert('ERROR');
             clearAll();
         } else {
@@ -101,15 +105,14 @@ equalButton.addEventListener('click', function () {
     } else {
         result = operate(currentOperator, secondNumber, firstNumber);
         secondNumber = result;
+        firstNumber = null;
+        currentOperator = '';
         if (result === Infinity || NaN) {
             alert('ERROR');
             clearAll();
         } else {
             resultDisplay();
         }
-
-        firstNumber = null;
-        currentOperator = '';
     }
 })
 
@@ -129,7 +132,7 @@ function clearAll() {
     currentOperator = '';
     firstNumber = null;
     secondNumber = null;
-    result = '';
+    result = null;
     mainScreen.textContent = '';
     buffer.textContent = '';
 }
@@ -156,7 +159,7 @@ document.addEventListener('keydown', function (e) {
     const operatorKey = document.querySelector(`#operators button[data-key="${e.keyCode}"]`);
     const equalKey = document.querySelector(`#calculate button[data-key="${e.keyCode}"]`);
 
-    if (digit) {
+    if (digit && !e.shiftKey) {
         mainScreen.textContent += `${e.key}`;
         displayValue.push(mainScreen.textContent);
         firstNumber = parseFloat(displayValue.pop());
@@ -167,6 +170,10 @@ document.addEventListener('keydown', function (e) {
     } else if (decimalKey) {
         if (mainScreen.textContent.includes('.')) {
             return;
+        } else if (mainScreen.textContent === '') {
+            mainScreen.textContent = 0 + `${e.key}`;
+            displayValue.push(mainScreen.textContent);
+            firstNumber = parseFloat(displayValue.pop());
         } else {
             mainScreen.textContent += `${e.key}`;
             displayValue.push(mainScreen.textContent);
@@ -188,7 +195,7 @@ document.addEventListener('keydown', function (e) {
             secondNumber = firstNumber;
             firstNumber = null;
         }
-        if (result === Infinity) {
+        if (result === Infinity || NaN) {
             alert('ERROR');
             clearAll();
         } else {
@@ -201,14 +208,14 @@ document.addEventListener('keydown', function (e) {
         } else {
             result = operate(currentOperator, secondNumber, firstNumber);
             secondNumber = result;
-            if (result === Infinity || NaN) {
+            firstNumber = null;
+            currentOperator = '';
+            if (result === (Infinity || NaN)) {
                 alert('ERROR');
                 clearAll();
             } else {
                 resultDisplay();
             }
-            firstNumber = null;
-            currentOperator = '';
         }
     } else if (isNaN(digit) || isNaN(backspaceKey) || isNaN(decimalKey)) return;
 });
