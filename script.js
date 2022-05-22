@@ -65,6 +65,7 @@ numbers.forEach((button) => {
     button.addEventListener('click', numberDisplay);
 })
 
+
 operators.forEach((button) => {
     button.addEventListener('click', function () {
         if (currentOperator) {
@@ -83,8 +84,8 @@ operators.forEach((button) => {
             firstNumber = null;
         }
         if (result === Infinity) {
-            buffer.textContent = 'ERROR';
-            mainScreen.textContent = '';
+            alert('ERROR');
+            clearAll();
         } else {
             clearDisplay();
             currentOperator = button.value;
@@ -99,13 +100,14 @@ equalButton.addEventListener('click', function () {
         return;
     } else {
         result = operate(currentOperator, secondNumber, firstNumber);
+        secondNumber = result;
         if (result === Infinity || NaN) {
-            buffer.textContent = 'ERROR';
-            mainScreen.textContent = '';
+            alert('ERROR');
+            clearAll();
         } else {
             resultDisplay();
         }
-        secondNumber = result;
+
         firstNumber = null;
         currentOperator = '';
     }
@@ -140,16 +142,19 @@ let removed = [];
 
 function backspace() {
     removed = mainScreen.textContent;
+    firstNumber = parseFloat(removed.slice(0, -1));
     mainScreen.textContent = removed.slice(0, -1);
-    firstNumber = null;
 }
 
 backspaceBtn.addEventListener('click', backspace);
 
+//keyCode should be replaced with key or code in the future
 document.addEventListener('keydown', function (e) {
     const digit = document.querySelector(`#digits button[data-key="${e.keyCode}"]`);
     const backspaceKey = document.querySelector(`#backspace button[data-key="${e.keyCode}"]`);
     const decimalKey = document.querySelector(`#decimal button[data-key="${e.keyCode}"]`);
+    const operatorKey = document.querySelector(`#operators button[data-key="${e.keyCode}"]`);
+    const equalKey = document.querySelector(`#calculate button[data-key="${e.keyCode}"]`);
 
     if (digit) {
         mainScreen.textContent += `${e.key}`;
@@ -157,8 +162,8 @@ document.addEventListener('keydown', function (e) {
         firstNumber = parseFloat(displayValue.pop());
     } else if (backspaceKey) {
         removed = mainScreen.textContent;
+        firstNumber = parseFloat(removed.slice(0, -1));
         mainScreen.textContent = removed.slice(0, -1);
-        firstNumber = null;
     } else if (decimalKey) {
         if (mainScreen.textContent.includes('.')) {
             return;
@@ -167,5 +172,43 @@ document.addEventListener('keydown', function (e) {
             displayValue.push(mainScreen.textContent);
             firstNumber = parseFloat(displayValue.pop());
         }
-    } else if (!digit || !backspaceKey || !decimalKey) return;
+    } else if (operatorKey) {
+        if (currentOperator) {
+            result = operate(currentOperator, secondNumber, firstNumber);
+            secondNumber = result;
+            firstNumber = null;
+        } else if (!currentOperator && firstNumber && secondNumber) {
+            currentOperator = `${e.key}`;
+            secondNumber = firstNumber;
+            firstNumber = null;
+        } else if (!currentOperator && secondNumber) {
+            currentOperator = `${e.key}`;
+        } else {
+            currentOperator = `${e.key}`;
+            secondNumber = firstNumber;
+            firstNumber = null;
+        }
+        if (result === Infinity) {
+            alert('ERROR');
+            clearAll();
+        } else {
+            clearDisplay();
+            currentOperator = `${e.key}`;
+        }
+    } else if (equalKey) {
+        if (!currentOperator) {
+            return;
+        } else {
+            result = operate(currentOperator, secondNumber, firstNumber);
+            secondNumber = result;
+            if (result === Infinity || NaN) {
+                alert('ERROR');
+                clearAll();
+            } else {
+                resultDisplay();
+            }
+            firstNumber = null;
+            currentOperator = '';
+        }
+    } else if (isNaN(digit) || isNaN(backspaceKey) || isNaN(decimalKey)) return;
 });
