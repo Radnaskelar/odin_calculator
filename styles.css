@@ -1,19 +1,79 @@
+* {
+    box-sizing: border-box;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+body {
+    border: solid purple 2px;
+    display: flex;
+    flex-direction: column;
+    margin: 10vh;
+    padding: 10px;
+    width: 250px;
+    height: 210px;
+}
+
 #display {
-    border: solid green;
+    border: solid green 1px;
+    
+}
+
+.main {
+    height: 0.1em;
 }
 
 .buffer {
-    border: solid pink;
+    height: 1.5em;
+    border: solid pink 1px;
+}
+
+#delete {
+    border: solid aquamarine 1px;
+    display: flex;
+    
+}
+
+#delete button {
+    width: 112px;
+}
+
+#mid {
+    
+    display: flex;
 }
 
 #digits {
-    border: solid red;
+    display: flex;
+    flex-wrap: wrap;
+    width: 168px;
+}
+
+button {
+    width: 56px;
 }
 
 #operators {
-    border: solid blue;
+    display: flex;
+    width: 56px;
+    flex-direction: column;
+    
 }
 
-.decimal {
-    border: solid black;
+#decimal {
+    
+    position: relative;
+    bottom: 21px;
+    left: 56px;
+    width: min-content;
+    
+}
+
+#calculate {
+    
+    display: flex;
+    position: relative;
+    bottom: 42px;
+    left: 112px;
+    width: min-content;
+    
 }

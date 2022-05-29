@@ -100,7 +100,7 @@ operators.forEach((button) => {
 const equalButton = document.querySelector('button.operate');
 
 equalButton.addEventListener('click', function () {
-    if (!currentOperator) {
+    if (!currentOperator || !firstNumber) {
         return;
     } else {
         result = operate(currentOperator, secondNumber, firstNumber);
@@ -154,7 +154,7 @@ backspaceBtn.addEventListener('click', backspace);
 //keyCode should be replaced with key or code in the future
 document.addEventListener('keydown', function (e) {
     const digit = document.querySelector(`#digits button[data-key="${e.keyCode}"]`);
-    const backspaceKey = document.querySelector(`#backspace button[data-key="${e.keyCode}"]`);
+    const backspaceKey = document.querySelector(`#delete button[data-key="${e.keyCode}"]`);
     const decimalKey = document.querySelector(`#decimal button[data-key="${e.keyCode}"]`);
     const operatorKey = document.querySelector(`#operators button[data-key="${e.keyCode}"]`);
     const equalKey = document.querySelector(`#calculate button[data-key="${e.keyCode}"]`);
@@ -203,7 +203,7 @@ document.addEventListener('keydown', function (e) {
             currentOperator = `${e.key}`;
         }
     } else if (equalKey) {
-        if (!currentOperator) {
+        if (!currentOperator || !firstNumber) {
             return;
         } else {
             result = operate(currentOperator, secondNumber, firstNumber);
