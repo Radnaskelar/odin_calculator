@@ -16,13 +16,12 @@ body {
     display: flex;
     flex-direction: column;
     width: 400px;
-    max-height: 620px;
 }
 
 #calculator button {
     cursor: pointer;
     font-size: 2rem;
-    border: solid white 1px;
+    border: rgba(14, 33, 85,);
     outline: none;
     background-color: rgba(255, 255, 255 .75);
     height: 100px;
@@ -35,7 +34,7 @@ body {
 
 #display {
     padding-right: 10px;
-    background-color: rgba(0, 0, 0, .75);
+    background-color: rgba(14, 33, 85, 0.75);
     display: flex;
     align-items: flex-end;
     justify-content: space-around;
