@@ -55,7 +55,7 @@ decimal.addEventListener('click', function (e) {
     if (mainScreen.textContent.includes('.')) {
         return;
     } else if (mainScreen.textContent === '') {
-        mainScreen.textContent = 0+e.target.value;
+        mainScreen.textContent = 0 + e.target.value;
         displayValue.push(mainScreen.textContent);
         firstNumber = parseFloat(displayValue.pop());
     } else {
@@ -100,7 +100,7 @@ operators.forEach((button) => {
 const equalButton = document.querySelector('button.operate');
 
 equalButton.addEventListener('click', function () {
-    if (!currentOperator || !firstNumber) {
+    if (!currentOperator || firstNumber === null) {
         return;
     } else {
         result = operate(currentOperator, secondNumber, firstNumber);
@@ -133,7 +133,7 @@ function clearAll() {
     firstNumber = null;
     secondNumber = null;
     result = null;
-    mainScreen.textContent = '';
+    mainScreen.textContent = 0;
     buffer.textContent = '';
 }
 
@@ -203,7 +203,7 @@ document.addEventListener('keydown', function (e) {
             currentOperator = `${e.key}`;
         }
     } else if (equalKey) {
-        if (!currentOperator || !firstNumber) {
+        if (!currentOperator || firstNumber === null) {
             return;
         } else {
             result = operate(currentOperator, secondNumber, firstNumber);

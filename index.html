@@ -7,44 +7,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="http://fonts.cdnfonts.com/css/gotham-rounded" rel="stylesheet">
 </head>
 
 <body>
-    <div id="display">
-        <p class="buffer"></p>
-        <p class="main"></p>
-    </div>
-    <div id="delete">
-        <button class="clear" value="C">C</button>
-        <button data-key="8" class="backspace" value="DEL">DEL</button>
-    </div>
-    <div id="mid">
-        <div id="digits">
-            <button data-key="49" value="1">1</button>
-            <button data-key="50" value="2">2</button>
-            <button data-key="51" value="3">3</button>
-            <button data-key="52" value="4">4</button>
-            <button data-key="53" value="5">5</button>
-            <button data-key="54" value="6">6</button>
-            <button data-key="55" value="7">7</button>
-            <button data-key="56" value="8">8</button>
-            <button data-key="57" value="9">9</button>
-            <button data-key="48" value="0">0</button>
+    <div id="calculator">
+        <div id="display">
+            <p style="font-size: 1.5rem;" class="buffer"></p>
+            <p style="font-size: 2rem;" class="main">0</p>
         </div>
-        <div id="operators">
-            <button data-key="107" class="addition" value="+">+</button>
-            <button data-key="109" class="substraction" value="-">-</button>
-            <button data-key="106" class="multiplication" value="*">*</button>
-            <button data-key="191" class="division" value="/">/</button>
+        <div id="buttons">
+            <div id="delete">
+                <button class="clear" value="C">C</button>
+                <button data-key="8" class="backspace" value="DEL">DEL</button>
+            </div>
+            <div id="keys">
+                <div id="digits">
+                    <button data-key="49" value="1">1</button>
+                    <button data-key="50" value="2">2</button>
+                    <button data-key="51" value="3">3</button>
+                    <button data-key="52" value="4">4</button>
+                    <button data-key="53" value="5">5</button>
+                    <button data-key="54" value="6">6</button>
+                    <button data-key="55" value="7">7</button>
+                    <button data-key="56" value="8">8</button>
+                    <button data-key="57" value="9">9</button>
+                    <button data-key="48" value="0">0</button>
+                </div>
+                <div id="operators">
+                    <button data-key="107" class="addition" value="+">+</button>
+                    <button data-key="109" class="substraction" value="-">-</button>
+                    <button data-key="106" class="multiplication" value="*">*</button>
+                    <button data-key="191" class="division" value="/">/</button>
+                </div>
+            </div>
+            <div id="decimal">
+                <button data-key="190" class="decimal" value=".">.</button>
+            </div>
+            <div id="calculate">
+                <button data-key="13" class="operate" value="=">=</button>
+            </div>
         </div>
     </div>
-    <div id="decimal">
-        <button data-key="190" class="decimal" value=".">.</button>
-    </div>
-    <div id="calculate">
-        <button data-key="13" class="operate" value="=">=</button>
-    </div>
-
     <script src="script.js"></script>
 </body>
 
