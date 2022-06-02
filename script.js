@@ -133,7 +133,7 @@ function clearAll() {
     firstNumber = null;
     secondNumber = null;
     result = null;
-    mainScreen.textContent = 0;
+    mainScreen.textContent = '';
     buffer.textContent = '';
 }
 
