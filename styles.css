@@ -21,7 +21,7 @@ body {
 #calculator button {
     cursor: pointer;
     font-size: 2rem;
-    border: rgba(14, 33, 85,);
+    border: rgba(14, 33, 85, );
     outline: none;
     background-color: rgba(255, 255, 255 .75);
     height: 100px;

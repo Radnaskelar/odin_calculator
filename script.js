@@ -38,17 +38,22 @@ const numbers = Array.from(document.querySelector('#digits').querySelectorAll('b
 const decimal = document.querySelector('.decimal');
 
 let displayValue = [];
-let currentOperator = '';
-let firstNumber = null;
-let secondNumber = null;
-let result = null;
+let currentOperator = null;
+let firstNumber = '';
+let secondNumber = '';
+let result = '';
 const mainScreen = document.querySelector('#display').querySelector('p.main');
 const buffer = document.querySelector('#display').querySelector('p.buffer');
 
 function numberDisplay(e) {
-    mainScreen.textContent += e.target.value;
-    displayValue.push(mainScreen.textContent);
-    firstNumber = parseFloat(displayValue.pop());
+    if (mainScreen.textContent === '0') {
+        return;
+    }
+    if (mainScreen.textContent.length < 15) {
+        mainScreen.textContent += e.target.value;
+        displayValue.push(mainScreen.textContent);
+        firstNumber = parseFloat(displayValue.pop());
+    }
 }
 
 decimal.addEventListener('click', function (e) {
@@ -73,41 +78,46 @@ numbers.forEach((button) => {
 operators.forEach((button) => {
     button.addEventListener('click', function () {
         if (currentOperator) {
-            result = operate(currentOperator, secondNumber, firstNumber);
-            secondNumber = result;
-            firstNumber = null;
-        } else if (!currentOperator && firstNumber && secondNumber) {
+            if (firstNumber === '') {
+                return;
+            } else {
+                result = operate(currentOperator, secondNumber, firstNumber);
+                secondNumber = result;
+                firstNumber = '';
+            }
+        } else if (currentOperator === null && firstNumber && secondNumber) {
             currentOperator = button.value;
             secondNumber = firstNumber;
-            firstNumber = null;
-        } else if (!currentOperator && secondNumber) {
+            firstNumber = '';
+        } else if (currentOperator === null && secondNumber) {
             currentOperator = button.value;
         } else {
             currentOperator = button.value;
             secondNumber = firstNumber;
-            firstNumber = null;
+            firstNumber = '';
         }
-        if (result === Infinity || NaN) {
+        if (result === Infinity || result === NaN) {
             alert('ERROR');
             clearAll();
         } else {
             clearDisplay();
             currentOperator = button.value;
         }
+        buffer.textContent += currentOperator;
     });
 })
 
 const equalButton = document.querySelector('button.operate');
 
 equalButton.addEventListener('click', function () {
-    if (!currentOperator || firstNumber === null) {
+    if (currentOperator === null || firstNumber === '') {
         return;
     } else {
         result = operate(currentOperator, secondNumber, firstNumber);
         secondNumber = result;
-        firstNumber = null;
-        currentOperator = '';
-        if (result === Infinity || NaN) {
+        firstNumber = '';
+        currentOperator = null;
+        if (result === Infinity || result === NaN) {
             alert('ERROR');
             clearAll();
         } else {
@@ -129,10 +139,10 @@ function resultDisplay() {
 const clearBtn = document.querySelector('.clear');
 
 function clearAll() {
-    currentOperator = '';
-    firstNumber = null;
-    secondNumber = null;
-    result = null;
+    currentOperator = null;
+    firstNumber = '';
+    secondNumber = '';
+    result = '';
     mainScreen.textContent = '';
     buffer.textContent = '';
 }
@@ -151,7 +161,7 @@ function backspace() {
 
 backspaceBtn.addEventListener('click', backspace);
 
-//keyCode should be replaced with key or code in the future
+//keyCode deprecated
 document.addEventListener('keydown', function (e) {
     const digit = document.querySelector(`#digits button[data-key="${e.keyCode}"]`);
     const backspaceKey = document.querySelector(`#delete button[data-key="${e.keyCode}"]`);
@@ -160,9 +170,11 @@ document.addEventListener('keydown', function (e) {
     const equalKey = document.querySelector(`#calculate button[data-key="${e.keyCode}"]`);
 
     if (digit && !e.shiftKey) {
-        mainScreen.textContent += `${e.key}`;
-        displayValue.push(mainScreen.textContent);
-        firstNumber = parseFloat(displayValue.pop());
+        if (mainScreen.textContent.length < 15) {
+            mainScreen.textContent += `${e.key}`;
+            displayValue.push(mainScreen.textContent);
+            firstNumber = parseFloat(displayValue.pop())
+        };
     } else if (backspaceKey) {
         removed = mainScreen.textContent;
         firstNumber = parseFloat(removed.slice(0, -1));
@@ -181,19 +193,23 @@ document.addEventListener('keydown', function (e) {
         }
     } else if (operatorKey) {
         if (currentOperator) {
-            result = operate(currentOperator, secondNumber, firstNumber);
-            secondNumber = result;
-            firstNumber = null;
-        } else if (!currentOperator && firstNumber && secondNumber) {
+            if (firstNumber === '') {
+                return;
+            } else {
+                result = operate(currentOperator, secondNumber, firstNumber);
+                secondNumber = result;
+                firstNumber = '';
+            }
+        } else if (currentOperator === null && firstNumber && secondNumber) {
             currentOperator = `${e.key}`;
             secondNumber = firstNumber;
-            firstNumber = null;
-        } else if (!currentOperator && secondNumber) {
+            firstNumber = '';
+        } else if (currentOperator === null && secondNumber) {
             currentOperator = `${e.key}`;
         } else {
             currentOperator = `${e.key}`;
             secondNumber = firstNumber;
-            firstNumber = null;
+            firstNumber = '';
         }
         if (result === Infinity || NaN) {
             alert('ERROR');
@@ -202,14 +218,15 @@ document.addEventListener('keydown', function (e) {
             clearDisplay();
             currentOperator = `${e.key}`;
         }
+        buffer.textContent += currentOperator;
     } else if (equalKey) {
-        if (!currentOperator || firstNumber === null) {
+        if (currentOperator === null || firstNumber === '') {
             return;
         } else {
             result = operate(currentOperator, secondNumber, firstNumber);
             secondNumber = result;
-            firstNumber = null;
-            currentOperator = '';
+            firstNumber = '';
+            currentOperator = null;
             if (result === (Infinity || NaN)) {
                 alert('ERROR');
                 clearAll();
